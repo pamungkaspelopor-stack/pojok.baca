@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Penilaian Lomba Pojok Baca - SDN 190 Cisaranten Kidul</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 35%, #311042 70%, #0f766e 100%);
+      --surface: rgba(255, 255, 255, 0.96);
+      --surface-solid: #ffffff;
+      --surface-alt: #f8fafc;
+      --primary: #4f46e5;
+      --primary-dark: #3730a3;
+      --primary-light: #e0e7ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --pink: #db2777;
+      --pink-light: #fce7f3;
+      --amber: #d97706;
+      --amber-light: #fef3c7;
+      --danger: #e11d48;
+      --danger-light: #ffe4e6;
+      --success: #059669;
+      --success-light: #d1fae5;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 18px;
+      --shadow-lg: 0 20px 45px rgba(15, 23, 42, 0.22);
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f1f5f9;
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    body.login-mode {
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+    }
+
+    /* Decorative Floating Blobs for Login */
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.45;
+      animation: floatOrb 12s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 380px;
+      height: 380px;
+      background: #ec4899;
+      top: -90px;
+      left: -80px;
+    }
+
+    .orb-2 {
+      width: 420px;
+      height: 420px;
+      background: #6366f1;
+      bottom: -110px;
+      right: -90px;
+      animation-delay: 2s;
+    }
+
+    .orb-3 {
+      width: 300px;
+      height: 300px;
+      background: #14b8a6;
+      top: 40%;
+      left: 55%;
+      animation-delay: 4s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(25px, -20px) scale(1.08); }
+    }
+
+    /* Header */
+    .topbar {
+      background: linear-gradient(90deg, #312e81 0%, #4f46e5 35%, #9333ea 70%, #0d9488 100%);
+      color: #fff;
+      padding: 15px 22px;
+      box-shadow: 0 4px 20px rgba(49, 46, 129, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    .brand p {
+      font-size: 0.82rem;
+      opacity: 0.92;
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge-role {
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sync-pill {
+      background: rgba(15, 23, 42, 0.32);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 600;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1300px;
+      margin: 24px auto;
+      padding: 0 16px 64px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Buttons & Inputs */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 16px;
+      border-radius: 11px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.28);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(124, 58, 237, 0.36);
+    }
+
+    .btn-teal {
+      background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.22);
+    }
+
+    .btn-teal:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text);
+      border-color: #cbd5e1;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #fff;
+    }
+
+    .btn-accent:hover:not(:disabled) {
+      filter: brightness(1.05);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+      color: #fff;
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      filter: brightness(1.05);
+    }
+
+    .btn-light {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-light:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-sm {
+      padding: 7px 12px;
+      font-size: 0.81rem;
+      border-radius: 9px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="number"],
+    input[type="url"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 11px;
+      font-size: 0.92rem;
+      color: var(--text);
+      background: #fff;
+      transition: border-color 0.16s, box-shadow 0.16s;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3.5px rgba(79, 70, 229, 0.16);
+    }
+
+    input:disabled,
+    textarea:disabled {
+      background: #f1f5f9;
+      color: #64748b;
+      cursor: not-allowed;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface-solid);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1e1b4b;
+    }
+
+    /* Elegant Login Screen */
+    .login-wrapper {
+      max-width: 450px;
+      margin: 44px auto;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 24px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #4f46e5, #9333ea, #ec4899, #14b8a6);
+    }
+
+    .login-hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .login-hero .logo-circle {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 14px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #4f46e5 0%, #9333ea 55%, #ec4899 100%);
+      color: #fff;
+      font-size: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 28px rgba(124, 58, 237, 0.35);
+    }
+
+    .school-chip {
+      display: inline-block;
+      background: linear-gradient(90deg, #e0e7ff, #fae8ff);
+      color: #4338ca;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .login-hero h2 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .login-hero p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .token-input {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 1.02rem !important;
+      background: #f8fafc !important;
+    }
+
+    /* Alerts & Banners */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .alert-danger {
+      background: var(--danger-light);
+      color: #9f1239;
+      border: 1px solid #fda4af;
+      font-weight: 600;
+    }
+
+    /* Full-Color Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      border-radius: 18px;
+      padding: 20px;
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      right: -18px;
+      bottom: -24px;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .stat-card.grad-1 {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    }
+
+    .stat-card.grad-2 {
+      background: linear-gradient(135deg, #0d9488 0%, #10b981 100%);
+    }
+
+    .stat-card.grad-3 {
+      background: linear-gradient(135deg, #9333ea 0%, #db2777 100%);
+    }
+
+    .stat-card.grad-4 {
+      background: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 4px 0;
+    }
+
+    .stat-sub {
+      font-size: 0.82rem;
+      opacity: 0.9;
+    }
+
+    /* Podium */
+    .podium-wrap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: end;
+      gap: 14px;
+      max-width: 800px;
+      margin: 10px auto 6px;
+      padding-top: 16px;
+    }
+
+    .podium-item {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .podium-class {
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+
+    .podium-score {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #4338ca;
+      background: var(--primary-light);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .podium-pillar {
+      width: 100%;
+      border-radius: 16px 16px 6px 6px;
+      color: #fff;
+      font-weight: 800;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 8px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+    }
+
+    .podium-1 .podium-pillar {
+      height: 148px;
+      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+    }
+
+    .podium-2 .podium-pillar {
+      height: 112px;
+      background: linear-gradient(180deg, #818cf8 0%, #4f46e5 100%);
+    }
+
+    .podium-3 .podium-pillar {
+      height: 88px;
+      background: linear-gradient(180deg, #f472b6 0%, #db2777 100%);
+    }
+
+    .podium-medal {
+      font-size: 1.7rem;
+      margin-bottom: 2px;
+    }
+
+    /* Rubric Pills */
+    .rubric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .rubric-chip {
+      padding: 10px 13px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .rc-1 { background: #eef2ff; color: #3730a3; border: 1px solid #c7d2fe; }
+    .rc-2 { background: #fdf2f8; color: #9d174d; border: 1px solid #fbcfe8; }
+    .rc-3 { background: #f0fdfa; color: #115e59; border: 1px solid #99f6e4; }
+    .rc-4 { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .tab-btn {
+      padding: 9px 16px;
+      border-radius: 11px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      border: 1px solid var(--border);
+      background: var(--surface-solid);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.16s;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+
+    /* Tables */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      background: #fff;
+    }
+
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+      font-weight: 800;
+      color: #1e1b4b;
+      white-space: nowrap;
+    }
+
+    tr:hover td {
+      background: #f5f3ff;
+    }
+
+    .num-col {
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score-input {
+      width: 68px !important;
+      text-align: center;
+      font-weight: 800;
+      padding: 7px 6px !important;
+    }
+
+    .note-input {
+      min-width: 175px;
+      font-size: 0.84rem !important;
+      padding: 7px 10px !important;
+    }
+
+    .total-badge {
+      display: inline-block;
+      min-width: 66px;
+      text-align: center;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #e0e7ff 0%, #fae8ff 100%);
+      color: #4338ca;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .total-badge.empty {
+      background: #f1f5f9;
+      color: var(--muted);
+    }
+
+    /* Predikat Badges */
+    .predikat {
+      display: inline-block;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .pred-sb { background: #d1fae5; color: #065f46; }
+    .pred-b { background: #e0e7ff; color: #3730a3; }
+    .pred-c { background: #fef3c7; color: #92400e; }
+    .pred-k { background: #ffe4e6; color: #9f1239; }
+    .pred-none { background: #f1f5f9; color: #64748b; }
+
+    /* Progress Bar */
+    .progress-bar-bg {
+      width: 100%;
+      height: 11px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4f46e5, #9333ea, #ec4899, #14b8a6);
+      transition: width 0.3s ease;
+    }
+
+    /* Grid Form */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #1e293b;
+    }
+
+    .code-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 14px;
+      border-radius: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.78rem;
+      overflow-x: auto;
+      white-space: pre;
+      max-height: 260px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 100%);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.3);
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: all 0.22s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Print Styles */
+    @media print {
+      .topbar, .no-print, .tabs, .btn, .toast, .bg-orbs {
+        display: none !important;
+      }
+      body {
+        background: #fff !important;
+        font-size: 11pt;
+      }
+      .container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        break-inside: avoid;
+      }
+      .stat-card {
+        color: #000 !important;
+        background: #f8fafc !important;
+        border: 1px solid #ccc;
+      }
+      .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 16px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+      }
+    }
+
+    .print-header {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .podium-wrap { gap: 8px; }
+      .podium-class { font-size: 0.82rem; }
+      .brand h1 { font-size: 1rem; }
+      .login-card { padding: 26px 20px; }
+    }
+  </style>
+</head>
+<body class="login-mode">
+
+  <div id="bgOrbs" class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Top Navbar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-icon">📚</div>
+        <div>
+          <h1>LOMBA POJOK BACA KELAS</h1>
+          <p>SDN 190 Cisaranten Kidul &bull; Sistem Penilaian Digital</p>
+        </div>
+      </div>
+      <div id="topbarActions" class="user-actions hidden">
+        <span id="syncStatusPill" class="sync-pill">💾 Lokal</span>
+        <span id="roleBadge" class="badge-role">👤 Peran</span>
+        <button type="button" class="btn btn-light btn-sm" onclick="logout()">Keluar</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Print Header -->
+    <div class="print-header">
+      <h2>LAPORAN HASIL PENILAIAN LOMBA POJOK BACA KELAS</h2>
+      <p>SDN 190 CISARANTEN KIDUL</p>
+      <p id="printTimestamp" style="font-size: 0.85rem; margin-top: 4px;"></p>
+    </div>
+
+    <!-- LOGIN VIEW (Bebas bocoran token juri) -->
+    <section id="loginView" class="login-wrapper">
+      <div class="login-card">
+        <div class="login-hero">
+          <div class="logo-circle">📖</div>
+          <span class="school-chip">SDN 190 Cisaranten Kidul</span>
+          <h2>Portal Penilaian Juri &amp; Panitia</h2>
+          <p>Silakan masukkan kode token akses resmi yang telah diberikan oleh panitia lomba.</p>
+        </div>
+
+        <div id="loginError" class="alert alert-danger hidden"></div>
+
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="tokenInput">Kode Token Akses</label>
+            <div class="input-group">
+              <input
+                type="password"
+                id="tokenInput"
+                class="token-input"
+                placeholder="••••••••"
+                autocomplete="off"
+                oninput="this.value = this.value.toUpperCase()"
+                required
+              />
+              <button type="button" id="toggleTokenBtn" class="btn btn-secondary" onclick="toggleTokenVisibility()">
+                Lihat
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 6px; font-size: 0.95rem;">
+            ✨ Masuk ke Aplikasi
+          </button>
+        </form>
+
+        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span style="font-size: 0.8rem; color: var(--muted);">Tautan akses perangkat juri:</span>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="copyJudgeLink()">
+            🔗 Salin Link Juri
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- JURI VIEW -->
+    <section id="juriView" class="hidden">
+      <div id="juriLockBanner" class="alert alert-danger hidden">
+        <span>🔒 <strong>Penilaian Dikunci oleh Panitia.</strong> Anda hanya dapat melihat nilai yang telah diinput.</span>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title" id="juriTitle">📝 Lembar Penilaian Juri</div>
+            <p style="font-size: 0.84rem; color: var(--muted); margin-top: 2px;">
+              Skala nilai <strong>1 – 4</strong> (otomatis dibatasi maks. 4). Tersimpan otomatis setiap perubahan.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" id="syncNowJuriBtn" class="btn btn-secondary btn-sm hidden" onclick="manualCloudPull()">
+              🔄 Tarik Data Cloud
+            </button>
+            <button type="button" id="resetMyScoresBtn" class="btn btn-danger btn-sm" onclick="resetCurrentJudgeScores()">
+              🗑️ Reset Nilai Saya
+            </button>
+          </div>
+        </div>
+
+        <!-- Rubrik Singkat & Bobot Full Color -->
+        <div class="rubric-grid">
+          <div class="rubric-chip rc-1"><span>1. Ketersediaan &amp; Variasi Buku</span><strong>30%</strong></div>
+          <div class="rubric-chip rc-2"><span>2. Kenyamanan &amp; Desain Pojok</span><strong>30%</strong></div>
+          <div class="rubric-chip rc-3"><span>3. Administrasi &amp; Jurnal Baca</span><strong>20%</strong></div>
+          <div class="rubric-chip rc-4"><span>4. Pemanfaatan oleh Siswa</span><strong>20%</strong></div>
+        </div>
+
+        <!-- Progress -->
+        <div style="margin-bottom: 18px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700;">
+            <span>Progres Penilaian Anda</span>
+            <span id="juriProgressText" style="color: #4f46e5;">0 / 16 Kelas (0%)</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="juriProgressBar" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Tabel Input Juri -->
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 44px;" class="num-col">No</th>
+                <th style="min-width: 145px;">Kelas Peserta</th>
+                <th class="num-col">Buku<br><small>(30%)</small></th>
+                <th class="num-col">Desain<br><small>(30%)</small></th>
+                <th class="num-col">Admin<br><small>(20%)</small></th>
+                <th class="num-col">Siswa<br><small>(20%)</small></th>
+                <th class="num-col">Total Nilai</th>
+                <th>Catatan Juri</th>
+              </tr>
+            </thead>
+            <tbody id="juriTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANITIA / ADMIN VIEW -->
+    <section id="adminView" class="hidden">
+      <!-- Action Bar Panitia -->
+      <div class="card no-print" style="padding: 14px 18px;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" id="toggleLockBtn" class="btn btn-accent btn-sm" onclick="toggleLock()">
+              🔓 Kunci Penilaian
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="copyJudgeLink()">
+              🔗 Salin Link Juri
+            </button>
+            <button type="button" id="adminSyncBtn" class="btn btn-secondary btn-sm hidden" onclick="manualCloudPull()">
+              🔄 Sinkron Cloud
+            </button>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="printReport()">
+              🖨️ Cetak Laporan
+            </button>
+            <button type="button" class="btn btn-teal btn-sm" onclick="exportCSV()">
+              📊 Unduh CSV / Excel
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="exportJSON()">
+              ⬇️ Ekspor JSON
+            </button>
+            <label class="btn btn-secondary btn-sm" style="margin: 0;">
+              ⬆️ Impor JSON
+              <input type="file" accept=".json,application/json" onchange="importJSON(event)" style="display: none;" />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Kartu Statistik Full Color -->
+      <div class="stats-grid">
+        <div class="stat-card grad-1">
+          <div class="stat-label">Total Peserta</div>
+          <div class="stat-value" id="statTotalKelas">16 Kelas</div>
+          <div class="stat-sub">Pojok Baca Kelas SDN 190</div>
+        </div>
+        <div class="stat-card grad-2">
+          <div class="stat-label">Progres Penilaian</div>
+          <div class="stat-value" id="statProgres">0 / 48</div>
+          <div class="stat-sub" id="statProgresPct">0% form juri terisi</div>
+        </div>
+        <div class="stat-card grad-3">
+          <div class="stat-label">Rata-Rata Sekolah</div>
+          <div class="stat-value" id="statRataRata">0.00</div>
+          <div class="stat-sub">Dari kelas yang sudah dinilai</div>
+        </div>
+        <div class="stat-card grad-4">
+          <div class="stat-label">Nilai Tertinggi</div>
+          <div class="stat-value" id="statTertinggi">0.00</div>
+          <div class="stat-sub" id="statTertinggiKelas">Belum ada data</div>
+        </div>
+      </div>
+
+      <!-- Podium Visual -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🏆 Podium 3 Besar Sementara</div>
+          <span style="font-size: 0.82rem; color: var(--muted);">Otomatis berdasarkan rata-rata nilai 3 juri</span>
+        </div>
+        <div class="podium-wrap">
+          <!-- Juara 2 -->
+          <div class="podium-item podium-2">
+            <div class="podium-class" id="pod2Name">-</div>
+            <div class="podium-score" id="pod2Score">0.00</div>
+            <div class="podium-pillar">
+              <div class="podium-medal">🥈</div>
+              <div>PERINGKAT 2</div>
+            </div>
+          </div>
+          <!-- Juara 1 -->
+          <div class="podium-item podium-1">
+            <div class="podium-class" id="pod1Name">-</div>
+            <div class="podium-score" id="pod1Score">0.00</div>
+            <div class="podium-pillar">
+              <div class="podium-medal">🥇</div>
+              <div>PERINGKAT 1</div>
+            </div>
+          </div>
+          <!-- Juara 3 -->
+          <div class="podium-item podium-3">
+            <div class="podium-class" id="pod3Name">-</div>
+            <div class="podium-score" id="pod3Score">0.00</div>
+            <div class="podium-pillar">
+              <div class="podium-medal">🥉</div>
+              <div>PERINGKAT 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigasi Sub-Tab Panitia -->
+      <div class="tabs no-print">
+        <button type="button" class="tab-btn active" data-tab="tabRekap" onclick="switchAdminTab('tabRekap', this)">
+          📋 Rekap Gabungan 16 Kelas
+        </button>
+        <button type="button" class="tab-btn" data-tab="tabKlasemen" onclick="switchAdminTab('tabKlasemen', this)">
+          🏅 Klasemen Sementara
+        </button>
+        <button type="button" class="tab-btn" data-tab="tabPengaturan" onclick="switchAdminTab('tabPengaturan', this)">
+          ⚙️ Pengaturan Kelas, Token &amp; Google Sheets
+        </button>
+      </div>
+
+      <!-- TAB 1: REKAP GABUNGAN -->
+      <div id="tabRekap" class="admin-tab-panel card">
+        <div class="card-header">
+          <div class="card-title">📋 Rekap Gabungan Nilai &amp; Catatan Dewan Juri</div>
+          <span style="font-size: 0.82rem; color: var(--muted);">Nilai Akhir = Rata-rata dari Total Juri 1, Juri 2, dan Juri 3</span>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th class="num-col">No</th>
+                <th>Kelas Peserta</th>
+                <th class="num-col">Juri 1<br><small id="thJ1Name">(Irpa Alim)</small></th>
+                <th class="num-col">Juri 2<br><small id="thJ2Name">(Prawardani)</small></th>
+                <th class="num-col">Juri 3<br><small id="thJ3Name">(Juri 3)</small></th>
+                <th class="num-col">Nilai Akhir</th>
+                <th>Catatan Juri</th>
+              </tr>
+            </thead>
+            <tbody id="adminRekapBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 2: KLASEMEN SEMENTARA -->
+      <div id="tabKlasemen" class="admin-tab-panel card hidden">
+        <div class="card-header">
+          <div class="card-title">🏅 Klasemen Sementara Lomba Pojok Baca</div>
+          <span style="font-size: 0.82rem; color: var(--muted);">Diurutkan otomatis dari peringkat #1 ke #16</span>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th class="num-col" style="width: 80px;">Peringkat</th>
+                <th>Kelas Peserta</th>
+                <th class="num-col">Juri 1</th>
+                <th class="num-col">Juri 2</th>
+                <th class="num-col">Juri 3</th>
+                <th class="num-col">Nilai Akhir</th>
+                <th>Predikat</th>
+              </tr>
+            </thead>
+            <tbody id="adminKlasemenBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: PENGATURAN -->
+      <div id="tabPengaturan" class="admin-tab-panel hidden">
+        <div class="grid-2">
+          <!-- Pengaturan Token & Nama Juri -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🔑 Manajemen Token &amp; Nama Juri</div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="resetTokensToDefault()">
+                Reset ke Bawaan
+              </button>
+            </div>
+            <form onsubmit="saveTokenSettings(event)">
+              <div class="form-group">
+                <label>Token Panitia / Admin</label>
+                <input type="text" id="cfgTokenAdmin" class="token-input" oninput="this.value=this.value.toUpperCase()" required />
+              </div>
+              <div class="grid-2" style="gap: 10px;">
+                <div class="form-group">
+                  <label>Nama Juri 1</label>
+                  <input type="text" id="cfgNameJ1" required />
+                </div>
+                <div class="form-group">
+                  <label>Token Juri 1</label>
+                  <input type="text" id="cfgTokenJ1" class="token-input" oninput="this.value=this.value.toUpperCase()" required />
+                </div>
+              </div>
+              <div class="grid-2" style="gap: 10px;">
+                <div class="form-group">
+                  <label>Nama Juri 2</label>
+                  <input type="text" id="cfgNameJ2" required />
+                </div>
+                <div class="form-group">
+                  <label>Token Juri 2</label>
+                  <input type="text" id="cfgTokenJ2" class="token-input" oninput="this.value=this.value.toUpperCase()" required />
+                </div>
+              </div>
+              <div class="grid-2" style="gap: 10px;">
+                <div class="form-group">
+                  <label>Nama Juri 3</label>
+                  <input type="text" id="cfgNameJ3" required />
+                </div>
+                <div class="form-group">
+                  <label>Token Juri 3</label>
+                  <input type="text" id="cfgTokenJ3" class="token-input" oninput="this.value=this.value.toUpperCase()" required />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px;">
+                💾 Simpan Perubahan Token
+              </button>
+            </form>
+          </div>
+
+          <!-- Pengaturan Google Apps Script Sync -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">☁️ Sinkronisasi Google Sheets (Opsional)</div>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--muted); margin-bottom: 12px;">
+              Tempel URL Web App Google Apps Script (<code>/exec</code>) agar nilai dari HP juri otomatis masuk ke laptop panitia. Saat URL terisi, tombol <strong>Salin Link Juri</strong> otomatis menyertakan parameter <code>?gas=</code>.
+            </p>
+            <div class="form-group">
+              <label for="cfgGasUrl">URL Web App Google Apps Script</label>
+              <input type="url" id="cfgGasUrl" placeholder="https://script.google.com/macros/s/.../exec" />
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="saveGasUrl()">
+                💾 Simpan &amp; Hubungkan
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="manualCloudPush()">
+                ⬆️ Kirim Data ke Cloud
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="manualCloudPull()">
+                ⬇️ Tarik dari Cloud
+              </button>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <strong style="font-size: 0.83rem;">Kode Google Apps Script (Code.gs):</strong>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="copyGasCode()">
+                📋 Salin Code.gs
+              </button>
+            </div>
+            <div id="gasCodePreview" class="code-box"></div>
+          </div>
+        </div>
+
+        <!-- Edit Daftar 16 Kelas -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🏫 Edit Daftar 16 Kelas Peserta</div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="resetClassesToDefault()">
+                Reset Daftar Kelas
+              </button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="saveClassNames()">
+                💾 Simpan Nama Kelas
+              </button>
+            </div>
+          </div>
+          <div id="classEditorGrid" class="grid-2"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var STORAGE_KEY = "sdn190_pojok_baca_v1";
+      var SESSION_KEY = "sdn190_pojok_baca_session";
+      var CHANNEL_NAME = "sdn190_pojok_baca_sync";
+
+      var DEFAULT_CLASSES = [
+        "1A dan 2A",
+        "1B dan 2B",
+        "1C dan 2C",
+        "1D dan 2F",
+        "1E dan 2E",
+        "3A dan 4A",
+        "3B dan 4B",
+        "3C dan 4C",
+        "3D dan 4D",
+        "3E dan 4E",
+        "5A dan 6A",
+        "5B dan 6B",
+        "5C dan 6C",
+        "5D dan 6D",
+        "5E dan 6E",
+        "Kelas Tambahan 16"
+      ];
+
+      var DEFAULT_CONFIG = {
+        tokens: {
+          admin: "PANITIA-190",
+          juri1: "BASYA-190",
+          juri2: "MEGA-190",
+          juri3: "JURI3-190"
+        },
+        names: {
+          admin: "Panitia Lomba",
+          juri1: "Irpa Alim",
+          juri2: "Prawardani",
+          juri3: "Juri 3"
+        },
+        locked: false,
+        gasUrl: ""
+      };
+
+      var GAS_TEMPLATE = [
+        "function doGet(e) {",
+        "  var sheet = getOrCreateSheet_();",
+        "  var raw = sheet.getRange('A1').getValue();",
+        "  var payload = raw ? raw : '{}';",
+        "  return ContentService.createTextOutput(payload).setMimeType(ContentService.MimeType.JSON);",
+        "}",
+        "",
+        "function doPost(e) {",
+        "  var lock = LockService.getScriptLock();",
+        "  lock.waitLock(10000);",
+        "  try {",
+        "    var sheet = getOrCreateSheet_();",
+        "    var body = JSON.parse(e.postData.contents);",
+        "    var existingRaw = sheet.getRange('A1').getValue();",
+        "    var state = existingRaw ? JSON.parse(existingRaw) : {};",
+        "    if (body.mode === 'full' && body.data) {",
+        "      state = body.data;",
+        "    } else if (body.mode === 'judge' && body.judgeKey && body.judgeScores) {",
+        "      if (!state.scores) state.scores = { juri1: {}, juri2: {}, juri3: {} };",
+        "      state.scores[body.judgeKey] = body.judgeScores;",
+        "      state.updatedAt = new Date().toISOString();",
+        "    }",
+        "    sheet.getRange('A1').setValue(JSON.stringify(state));",
+        "    writeSummaryTable_(sheet, state);",
+        "    return ContentService.createTextOutput(JSON.stringify({ status: 'ok', data: state })).setMimeType(ContentService.MimeType.JSON);",
+        "  } finally {",
+        "    lock.releaseLock();",
+        "  }",
+        "}",
+        "",
+        "function getOrCreateSheet_() {",
+        "  var ss = SpreadsheetApp.getActiveSpreadsheet();",
+        "  var sheet = ss.getSheetByName('RekapPojokBaca');",
+        "  if (!sheet) {",
+        "    sheet = ss.insertSheet('RekapPojokBaca');",
+        "  }",
+        "  return sheet;",
+        "}",
+        "",
+        "function writeSummaryTable_(sheet, state) {",
+        "  if (!state || !state.classes || !state.scores) return;",
+        "  var rows = [['No', 'Kelas', 'Juri 1', 'Juri 2', 'Juri 3', 'Nilai Akhir', 'Terakhir Update']];",
+        "  for (var i = 0; i < state.classes.length; i++) {",
+        "    var t1 = calcJudgeTotal_(state.scores.juri1 && state.scores.juri1[i]);",
+        "    var t2 = calcJudgeTotal_(state.scores.juri2 && state.scores.juri2[i]);",
+        "    var t3 = calcJudgeTotal_(state.scores.juri3 && state.scores.juri3[i]);",
+        "    var finalScore = ((t1 + t2 + t3) / 3).toFixed(2);",
+        "    rows.push([i + 1, state.classes[i], t1.toFixed(2), t2.toFixed(2), t3.toFixed(2), finalScore, state.updatedAt || '']);",
+        "  }",
+        "  sheet.getRange(3, 1, rows.length, rows[0].length).setValues(rows);",
+        "}",
+        "",
+        "function calcJudgeTotal_(entry) {",
+        "  if (!entry) return 0;",
+        "  var a = parseFloat(entry.a) || 0;",
+        "  var b = parseFloat(entry.b) || 0;",
+        "  var c = parseFloat(entry.c) || 0;",
+        "  var d = parseFloat(entry.d) || 0;",
+        "  return (((a * 0.30) + (b * 0.30) + (c * 0.20) + (d * 0.20)) / 4) * 100;",
+        "}"
+      ].join("\n");
+
+      var appState = loadInitialState();
+      var currentRole = null;
+      var bc = null;
+      var pushTimer = null;
+      var pollTimer = null;
+
+      if ("BroadcastChannel" in window) {
+        try {
+          bc = new BroadcastChannel(CHANNEL_NAME);
+          bc.onmessage = function (ev) {
+            if (ev && ev.data && ev.data.type === "STATE_UPDATED") {
+              appState = loadInitialState();
+              renderAll();
+            }
+          };
+        } catch (err) {
+          bc = null;
+        }
+      }
+
+      window.addEventListener("storage", function (e) {
+        if (e.key === STORAGE_KEY) {
+          appState = loadInitialState();
+          renderAll();
+        }
+      });
+
+      function createDefaultState() {
+        var scores = { juri1: {}, juri2: {}, juri3: {} };
+        for (var i = 0; i < 16; i++) {
+          scores.juri1[i] = { a: "", b: "", c: "", d: "", note: "" };
+          scores.juri2[i] = { a: "", b: "", c: "", d: "", note: "" };
+          scores.juri3[i] = { a: "", b: "", c: "", d: "", note: "" };
+        }
+        return {
+          classes: DEFAULT_CLASSES.slice(),
+          config: JSON.parse(JSON.stringify(DEFAULT_CONFIG)),
+          scores: scores,
+          updatedAt: new Date().toISOString()
+        };
+      }
+
+      function loadInitialState() {
+        var base = createDefaultState();
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed && Array.isArray(parsed.classes) && parsed.classes.length === 16) {
+              base.classes = parsed.classes;
+            }
+            if (parsed && parsed.config) {
+              if (parsed.config.tokens) {
+                base.config.tokens = Object.assign(base.config.tokens, parsed.config.tokens);
+              }
+              if (parsed.config.names) {
+                base.config.names = Object.assign(base.config.names, parsed.config.names);
+              }
+              if (typeof parsed.config.locked === "boolean") {
+                base.config.locked = parsed.config.locked;
+              }
+              if (typeof parsed.config.gasUrl === "string") {
+                base.config.gasUrl = parsed.config.gasUrl;
+              }
+            }
+            if (parsed && parsed.scores) {
+              ["juri1", "juri2", "juri3"].forEach(function (jk) {
+                if (parsed.scores[jk]) {
+                  for (var i = 0; i < 16; i++) {
+                    if (parsed.scores[jk][i]) {
+                      base.scores[jk][i] = Object.assign(base.scores[jk][i], parsed.scores[jk][i]);
+                    }
+                  }
+                }
+              });
+            }
+            if (parsed && parsed.updatedAt) {
+              base.updatedAt = parsed.updatedAt;
+            }
+          }
+        } catch (e) {}
+
+        try {
+          var params = new URLSearchParams(window.location.search);
+          var gasParam = params.get("gas");
+          if (gasParam && gasParam.trim() !== "") {
+            base.config.gasUrl = gasParam.trim();
+          }
+        } catch (err) {}
+
+        return base;
+      }
+
+      function persistState(syncMode) {
+        appState.updatedAt = new Date().toISOString();
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        } catch (e) {
+          showToast("Gagal menyimpan ke memori browser.");
+        }
+        if (bc) {
+          try {
+            bc.postMessage({ type: "STATE_UPDATED" });
+          } catch (e) {}
+        }
+        if (appState.config.gasUrl && syncMode) {
+          scheduleCloudPush(syncMode);
+        }
+      }
+
+      function scheduleCloudPush(syncMode) {
+        updateSyncPill("⏳ Menyinkronkan...");
+        if (pushTimer) clearTimeout(pushTimer);
+        pushTimer = setTimeout(function () {
+          pushToCloud(syncMode);
+        }, 900);
+      }
+
+      function pushToCloud(syncMode) {
+        var url = appState.config.gasUrl;
+        if (!url) return;
+        var payload = {};
+        if (syncMode === "judge" && currentRole && currentRole.indexOf("juri") === 0) {
+          payload = {
+            mode: "judge",
+            judgeKey: currentRole,
+            judgeScores: appState.scores[currentRole]
+          };
+        } else {
+          payload = {
+            mode: "full",
+            data: appState
+          };
+        }
+
+        fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        })
+          .then(function (res) { return res.json(); })
+          .then(function (json) {
+            if (json && json.data) {
+              mergeCloudData(json.data);
+              renderAll();
+            }
+            updateSyncPill("☁️ Tersinkron");
+          })
+          .catch(function () {
+            updateSyncPill("⚠️ Offline / Gagal Sync");
+          });
+      }
+
+      function pullFromCloud(silent) {
+        var url = appState.config.gasUrl;
+        if (!url) return;
+        if (!silent) updateSyncPill("🔄 Mengambil data...");
+        fetch(url)
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            if (data && (data.scores || data.classes || data.config)) {
+              mergeCloudData(data);
+              try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+              } catch (e) {}
+              renderAll();
+              updateSyncPill("☁️ Tersinkron");
+              if (!silent) showToast("Data berhasil diperbarui dari Google Sheets.");
+            } else {
+              updateSyncPill("☁️ Terhubung (Kosong)");
+            }
+          })
+          .catch(function () {
+            updateSyncPill("⚠️ Gagal Tarik Cloud");
+            if (!silent) showToast("Gagal mengambil data dari Google Sheets.");
+          });
+      }
+
+      function mergeCloudData(cloud) {
+        if (cloud.classes && Array.isArray(cloud.classes) && cloud.classes.length === 16) {
+          appState.classes = cloud.classes;
+        }
+        if (cloud.config) {
+          if (cloud.config.tokens) appState.config.tokens = Object.assign(appState.config.tokens, cloud.config.tokens);
+          if (cloud.config.names) appState.config.names = Object.assign(appState.config.names, cloud.config.names);
+          if (typeof cloud.config.locked === "boolean") appState.config.locked = cloud.config.locked;
+        }
+        if (cloud.scores) {
+          ["juri1", "juri2", "juri3"].forEach(function (jk) {
+            if (cloud.scores[jk] && jk !== currentRole) {
+              for (var i = 0; i < 16; i++) {
+                if (cloud.scores[jk][i]) {
+                  appState.scores[jk][i] = Object.assign(appState.scores[jk][i], cloud.scores[jk][i]);
+                }
+              }
+            } else if (cloud.scores[jk] && jk === currentRole && !document.activeElement.classList.contains("score-input") && !document.activeElement.classList.contains("note-input")) {
+              for (var j = 0; j < 16; j++) {
+                if (cloud.scores[jk][j]) {
+                  appState.scores[jk][j] = Object.assign(appState.scores[jk][j], cloud.scores[jk][j]);
+                }
+              }
+            }
+          });
+        }
+      }
+
+      function updateSyncPill(text) {
+        var pill = document.getElementById("syncStatusPill");
+        if (pill) pill.textContent = text;
+      }
+
+      function calcJudgeScore(entry) {
+        if (!entry) return { valid: false, total: 0 };
+        var hasAny = entry.a !== "" || entry.b !== "" || entry.c !== "" || entry.d !== "";
+        if (!hasAny) return { valid: false, total: 0 };
+        var a = parseFloat(entry.a) || 0;
+        var b = parseFloat(entry.b) || 0;
+        var c = parseFloat(entry.c) || 0;
+        var d = parseFloat(entry.d) || 0;
+        var total = (((a * 0.30) + (b * 0.30) + (c * 0.20) + (d * 0.20)) / 4) * 100;
+        return { valid: true, total: total };
+      }
+
+      function getPredikat(score, hasAnyScore) {
+        if (!hasAnyScore) return { label: "Belum Dinilai", cls: "pred-none" };
+        if (score >= 90) return { label: "Sangat Baik (A)", cls: "pred-sb" };
+        if (score >= 80) return { label: "Baik (B)", cls: "pred-b" };
+        if (score >= 70) return { label: "Cukup (C)", cls: "pred-c" };
+        return { label: "Perlu Pembinaan (D)", cls: "pred-k" };
+      }
+
+      window.handleLogin = function (e) {
+        e.preventDefault();
+        var raw = document.getElementById("tokenInput").value || "";
+        var clean = raw.trim().toUpperCase();
+        var tokens = appState.config.tokens;
+        var matchedRole = null;
+
+        if (clean === String(tokens.admin).trim().toUpperCase()) matchedRole = "admin";
+        else if (clean === String(tokens.juri1).trim().toUpperCase()) matchedRole = "juri1";
+        else if (clean === String(tokens.juri2).trim().toUpperCase()) matchedRole = "juri2";
+        else if (clean === String(tokens.juri3).trim().toUpperCase()) matchedRole = "juri3";
+
+        var errBox = document.getElementById("loginError");
+        if (!matchedRole) {
+          errBox.textContent = "❌ Token tidak valid. Periksa kembali token akses Anda.";
+          errBox.classList.remove("hidden");
+          return;
+        }
+
+        errBox.classList.add("hidden");
+        currentRole = matchedRole;
+        try {
+          sessionStorage.setItem(SESSION_KEY, matchedRole);
+        } catch (err) {}
+
+        document.getElementById("tokenInput").value = "";
+        enterDashboard();
+      };
+
+      window.toggleTokenVisibility = function () {
+        var inp = document.getElementById("tokenInput");
+        var btn = document.getElementById("toggleTokenBtn");
+        if (inp.type === "password") {
+          inp.type = "text";
+          btn.textContent = "Sembunyi";
+        } else {
+          inp.type = "password";
+          btn.textContent = "Lihat";
+        }
+      };
+
+      window.copyJudgeLink = function () {
+        var baseUrl = window.location.origin + window.location.pathname;
+        if (window.location.protocol === "file:") {
+          baseUrl = window.location.href.split("?")[0];
+        }
+        var shareUrl = baseUrl;
+        if (appState.config.gasUrl && appState.config.gasUrl.trim() !== "") {
+          shareUrl += "?gas=" + encodeURIComponent(appState.config.gasUrl.trim());
+        }
+        copyTextToClipboard(shareUrl, "Link Juri berhasil disalin ke clipboard!");
+      };
+
+      function copyTextToClipboard(text, successMsg) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            showToast(successMsg);
+          }).catch(function () {
+            fallbackCopy(text, successMsg);
+          });
+        } else {
+          fallbackCopy(text, successMsg);
+        }
+      }
+
+      function fallbackCopy(text, successMsg) {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand("copy");
+          showToast(successMsg);
+        } catch (e) {
+          showToast("Gagal menyalin otomatis. Silakan salin manual.");
+        }
+        document.body.removeChild(ta);
+      }
+
+      window.logout = function () {
+        currentRole = null;
+        if (pollTimer) clearInterval(pollTimer);
+        try {
+          sessionStorage.removeItem(SESSION_KEY);
+        } catch (e) {}
+        document.body.classList.add("login-mode");
+        document.getElementById("bgOrbs").classList.remove("hidden");
+        document.getElementById("loginView").classList.remove("hidden");
+        document.getElementById("juriView").classList.add("hidden");
+        document.getElementById("adminView").classList.add("hidden");
+        document.getElementById("topbarActions").classList.add("hidden");
+      };
+
+      function enterDashboard() {
+        document.body.classList.remove("login-mode");
+        document.getElementById("bgOrbs").classList.add("hidden");
+        document.getElementById("loginView").classList.add("hidden");
+        document.getElementById("topbarActions").classList.remove("hidden");
+
+        var badge = document.getElementById("roleBadge");
+        if (currentRole === "admin") {
+          badge.textContent = "🛡️ Panitia / Admin";
+          document.getElementById("adminView").classList.remove("hidden");
+          document.getElementById("juriView").classList.add("hidden");
+        } else {
+          var jLabel = currentRole === "juri1" ? "Juri 1" : currentRole === "juri2" ? "Juri 2" : "Juri 3";
+          var jName = appState.config.names[currentRole] || jLabel;
+          badge.textContent = "⚖️ " + jLabel + " (" + jName + ")";
+          document.getElementById("juriView").classList.remove("hidden");
+          document.getElementById("adminView").classList.add("hidden");
+        }
+
+        if (appState.config.gasUrl) {
+          updateSyncPill("☁️ Terhubung Cloud");
+          pullFromCloud(true);
+          if (pollTimer) clearInterval(pollTimer);
+          pollTimer = setInterval(function () {
+            pullFromCloud(true);
+          }, 15000);
+        } else {
+          updateSyncPill("💾 Penyimpanan Lokal");
+        }
+
+        renderAll();
+      }
+
+      function renderAll() {
+        if (!currentRole) return;
+        if (currentRole === "admin") {
+          renderAdminDashboard();
+        } else {
+          renderJuriDashboard();
+        }
+      }
+
+      function renderJuriDashboard() {
+        var jLabel = currentRole === "juri1" ? "Juri 1" : currentRole === "juri2" ? "Juri 2" : "Juri 3";
+        var jName = appState.config.names[currentRole] || jLabel;
+        document.getElementById("juriTitle").textContent = "📝 Lembar Penilaian — " + jLabel + " (" + jName + ")";
+
+        var locked = appState.config.locked;
+        var lockBanner = document.getElementById("juriLockBanner");
+        var resetBtn = document.getElementById("resetMyScoresBtn");
+        var syncBtn = document.getElementById("syncNowJuriBtn");
+
+        if (locked) {
+          lockBanner.classList.remove("hidden");
+          resetBtn.disabled = true;
+        } else {
+          lockBanner.classList.add("hidden");
+          resetBtn.disabled = false;
+        }
+
+        if (appState.config.gasUrl) {
+          syncBtn.classList.remove("hidden");
+        } else {
+          syncBtn.classList.add("hidden");
+        }
+
+        var tbody = document.getElementById("juriTableBody");
+        var jScores = appState.scores[currentRole];
+        var completedCount = 0;
+        var html = "";
+
+        for (var i = 0; i < 16; i++) {
+          var row = jScores[i] || { a: "", b: "", c: "", d: "", note: "" };
+          var res = calcJudgeScore(row);
+          if (res.valid) completedCount++;
+          var disAttr = locked ? "disabled" : "";
+
+          html += "<tr>";
+          html += "<td class=\"num-col\"><strong>" + (i + 1) + "</strong></td>";
+          html += "<td><strong>" + escapeHtml(appState.classes[i]) + "</strong></td>";
+          html += "<td class=\"num-col\"><input type=\"number\" step=\"0.1\" min=\"1\" max=\"4\" class=\"score-input\" data-idx=\"" + i + "\" data-field=\"a\" value=\"" + escapeAttr(row.a) + "\" " + disAttr + " oninput=\"onScoreInput(this)\" /></td>";
+          html += "<td class=\"num-col\"><input type=\"number\" step=\"0.1\" min=\"1\" max=\"4\" class=\"score-input\" data-idx=\"" + i + "\" data-field=\"b\" value=\"" + escapeAttr(row.b) + "\" " + disAttr + " oninput=\"onScoreInput(this)\" /></td>";
+          html += "<td class=\"num-col\"><input type=\"number\" step=\"0.1\" min=\"1\" max=\"4\" class=\"score-input\" data-idx=\"" + i + "\" data-field=\"c\" value=\"" + escapeAttr(row.c) + "\" " + disAttr + " oninput=\"onScoreInput(this)\" /></td>";
+          html += "<td class=\"num-col\"><input type=\"number\" step=\"0.1\" min=\"1\" max=\"4\" class=\"score-input\" data-idx=\"" + i + "\" data-field=\"d\" value=\"" + escapeAttr(row.d) + "\" " + disAttr + " oninput=\"onScoreInput(this)\" /></td>";
+          html += "<td class=\"num-col\"><span id=\"juriRowTotal_" + i + "\" class=\"total-badge " + (res.valid ? "" : "empty") + "\">" + (res.valid ? res.total.toFixed(2) : "0.00") + "</span></td>";
+          html += "<td><input type=\"text\" class=\"note-input\" placeholder=\"Catatan...\" data-idx=\"" + i + "\" value=\"" + escapeAttr(row.note) + "\" " + disAttr + " oninput=\"onNoteInput(this)\" /></td>";
+          html += "</tr>";
+        }
+
+        tbody.innerHTML = html;
+        updateJuriProgress(completedCount);
+      }
+
+      function updateJuriProgress(completedCount) {
+        var pct = Math.round((completedCount / 16) * 100);
+        document.getElementById("juriProgressText").textContent = completedCount + " / 16 Kelas (" + pct + "%)";
+        document.getElementById("juriProgressBar").style.width = pct + "%";
+      }
+
+      window.onScoreInput = function (el) {
+        if (appState.config.locked || !currentRole) return;
+        var idx = parseInt(el.getAttribute("data-idx"), 10);
+        var field = el.getAttribute("data-field");
+        var valStr = el.value;
+
+        if (valStr !== "") {
+          var num = parseFloat(valStr);
+          if (!isNaN(num)) {
+            if (num > 4) {
+              num = 4;
+              el.value = "4";
+            } else if (num < 0) {
+              num = 0;
+              el.value = "0";
+            }
+          }
+        }
+
+        appState.scores[currentRole][idx][field] = el.value;
+        var res = calcJudgeScore(appState.scores[currentRole][idx]);
+        var badge = document.getElementById("juriRowTotal_" + idx);
+        if (badge) {
+          badge.textContent = res.valid ? res.total.toFixed(2) : "0.00";
+          if (res.valid) badge.classList.remove("empty");
+          else badge.classList.add("empty");
+        }
+
+        var count = 0;
+        for (var i = 0; i < 16; i++) {
+          if (calcJudgeScore(appState.scores[currentRole][i]).valid) count++;
+        }
+        updateJuriProgress(count);
+        persistState("judge");
+      };
+
+      window.onNoteInput = function (el) {
+        if (appState.config.locked || !currentRole) return;
+        var idx = parseInt(el.getAttribute("data-idx"), 10);
+        appState.scores[currentRole][idx].note = el.value;
+        persistState("judge");
+      };
+
+      window.resetCurrentJudgeScores = function () {
+        if (appState.config.locked || !currentRole) return;
+        if (!confirm("Yakin ingin menghapus semua nilai dan catatan yang Anda input?")) return;
+        for (var i = 0; i < 16; i++) {
+          appState.scores[currentRole][i] = { a: "", b: "", c: "", d: "", note: "" };
+        }
+        persistState("judge");
+        renderJuriDashboard();
+        showToast("Nilai Anda berhasil direset.");
+      };
+
+      function computeSummaryRows() {
+        var rows = [];
+        for (var i = 0; i < 16; i++) {
+          var s1 = calcJudgeScore(appState.scores.juri1[i]);
+          var s2 = calcJudgeScore(appState.scores.juri2[i]);
+          var s3 = calcJudgeScore(appState.scores.juri3[i]);
+          var hasAny = s1.valid || s2.valid || s3.valid;
+          var finalScore = (s1.total + s2.total + s3.total) / 3;
+
+          var notes = [];
+          if (appState.scores.juri1[i].note && appState.scores.juri1[i].note.trim()) {
+            notes.push("J1: " + appState.scores.juri1[i].note.trim());
+          }
+          if (appState.scores.juri2[i].note && appState.scores.juri2[i].note.trim()) {
+            notes.push("J2: " + appState.scores.juri2[i].note.trim());
+          }
+          if (appState.scores.juri3[i].note && appState.scores.juri3[i].note.trim()) {
+            notes.push("J3: " + appState.scores.juri3[i].note.trim());
+          }
+
+          rows.push({
+            index: i,
+            className: appState.classes[i],
+            j1: s1,
+            j2: s2,
+            j3: s3,
+            hasAny: hasAny,
+            finalScore: finalScore,
+            notesText: notes.length ? notes.join(" | ") : "-"
+          });
+        }
+        return rows;
+      }
+
+      function renderAdminDashboard() {
+        var lockBtn = document.getElementById("toggleLockBtn");
+        if (appState.config.locked) {
+          lockBtn.textContent = "🔒 Status: TERKUNCI (Klik Buka)";
+          lockBtn.className = "btn btn-danger btn-sm";
+        } else {
+          lockBtn.textContent = "🔓 Kunci Penilaian";
+          lockBtn.className = "btn btn-accent btn-sm";
+        }
+
+        var syncBtn = document.getElementById("adminSyncBtn");
+        if (appState.config.gasUrl) syncBtn.classList.remove("hidden");
+        else syncBtn.classList.add("hidden");
+
+        document.getElementById("thJ1Name").textContent = "(" + appState.config.names.juri1 + ")";
+        document.getElementById("thJ2Name").textContent = "(" + appState.config.names.juri2 + ")";
+        document.getElementById("thJ3Name").textContent = "(" + appState.config.names.juri3 + ")";
+
+        var rows = computeSummaryRows();
+
+        var filledForms = 0;
+        var activeClassCount = 0;
+        var sumActiveScores = 0;
+        var highestScore = -1;
+        var highestClass = "-";
+
+        rows.forEach(function (r) {
+          if (r.j1.valid) filledForms++;
+          if (r.j2.valid) filledForms++;
+          if (r.j3.valid) filledForms++;
+          if (r.hasAny) {
+            activeClassCount++;
+            sumActiveScores += r.finalScore;
+            if (r.finalScore > highestScore) {
+              highestScore = r.finalScore;
+              highestClass = r.className;
+            }
+          }
+        });
+
+        var pctForms = Math.round((filledForms / 48) * 100);
+        var avgSchool = activeClassCount > 0 ? (sumActiveScores / activeClassCount) : 0;
+
+        document.getElementById("statProgres").textContent = filledForms + " / 48";
+        document.getElementById("statProgresPct").textContent = pctForms + "% form juri terisi";
+        document.getElementById("statRataRata").textContent = avgSchool.toFixed(2);
+        document.getElementById("statTertinggi").textContent = highestScore >= 0 ? highestScore.toFixed(2) : "0.00";
+        document.getElementById("statTertinggiKelas").textContent = highestScore >= 0 ? highestClass : "Belum ada nilai masuk";
+
+        var ranked = rows.slice().sort(function (a, b) {
+          if (b.finalScore !== a.finalScore) return b.finalScore - a.finalScore;
+          return a.index - b.index;
+        });
+
+        var p1 = ranked[0];
+        var p2 = ranked[1];
+        var p3 = ranked[2];
+        document.getElementById("pod1Name").textContent = p1 && p1.hasAny ? p1.className : "-";
+        document.getElementById("pod1Score").textContent = p1 && p1.hasAny ? p1.finalScore.toFixed(2) : "0.00";
+        document.getElementById("pod2Name").textContent = p2 && p2.hasAny ? p2.className : "-";
+        document.getElementById("pod2Score").textContent = p2 && p2.hasAny ? p2.finalScore.toFixed(2) : "0.00";
+        document.getElementById("pod3Name").textContent = p3 && p3.hasAny ? p3.className : "-";
+        document.getElementById("pod3Score").textContent = p3 && p3.hasAny ? p3.finalScore.toFixed(2) : "0.00";
+
+        var rekapHtml = "";
+        rows.forEach(function (r) {
+          rekapHtml += "<tr>";
+          rekapHtml += "<td class=\"num-col\"><strong>" + (r.index + 1) + "</strong></td>";
+          rekapHtml += "<td><strong>" + escapeHtml(r.className) + "</strong></td>";
+          rekapHtml += "<td class=\"num-col\">" + (r.j1.valid ? r.j1.total.toFixed(2) : "<span style=\'color:#94a3b8\'>-</span>") + "</td>";
+          rekapHtml += "<td class=\"num-col\">" + (r.j2.valid ? r.j2.total.toFixed(2) : "<span style=\'color:#94a3b8\'>-</span>") + "</td>";
+          rekapHtml += "<td class=\"num-col\">" + (r.j3.valid ? r.j3.total.toFixed(2) : "<span style=\'color:#94a3b8\'>-</span>") + "</td>";
+          rekapHtml += "<td class=\"num-col\"><span class=\"total-badge " + (r.hasAny ? "" : "empty") + "\">" + r.finalScore.toFixed(2) + "</span></td>";
+          rekapHtml += "<td style=\"font-size:0.82rem; color:#475569;\">" + escapeHtml(r.notesText) + "</td>";
+          rekapHtml += "</tr>";
+        });
+        document.getElementById("adminRekapBody").innerHTML = rekapHtml;
+
+        var klasemenHtml = "";
+        ranked.forEach(function (r, idx) {
+          var rankNum = idx + 1;
+          var medal = rankNum === 1 ? "🥇 #1" : rankNum === 2 ? "🥈 #2" : rankNum === 3 ? "🥉 #3" : "#" + rankNum;
+          var pred = getPredikat(r.finalScore, r.hasAny);
+          klasemenHtml += "<tr>";
+          klasemenHtml += "<td class=\"num-col\"><strong>" + medal + "</strong></td>";
+          klasemenHtml += "<td><strong>" + escapeHtml(r.className) + "</strong></td>";
+          klasemenHtml += "<td class=\"num-col\">" + r.j1.total.toFixed(2) + "</td>";
+          klasemenHtml += "<td class=\"num-col\">" + r.j2.total.toFixed(2) + "</td>";
+          klasemenHtml += "<td class=\"num-col\">" + r.j3.total.toFixed(2) + "</td>";
+          klasemenHtml += "<td class=\"num-col\"><span class=\"total-badge " + (r.hasAny ? "" : "empty") + "\">" + r.finalScore.toFixed(2) + "</span></td>";
+          klasemenHtml += "<td><span class=\"predikat " + pred.cls + "\">" + pred.label + "</span></td>";
+          klasemenHtml += "</tr>";
+        });
+        document.getElementById("adminKlasemenBody").innerHTML = klasemenHtml;
+
+        renderSettingsForms();
+      }
+
+      function renderSettingsForms() {
+        document.getElementById("cfgTokenAdmin").value = appState.config.tokens.admin;
+        document.getElementById("cfgTokenJ1").value = appState.config.tokens.juri1;
+        document.getElementById("cfgTokenJ2").value = appState.config.tokens.juri2;
+        document.getElementById("cfgTokenJ3").value = appState.config.tokens.juri3;
+
+        document.getElementById("cfgNameJ1").value = appState.config.names.juri1;
+        document.getElementById("cfgNameJ2").value = appState.config.names.juri2;
+        document.getElementById("cfgNameJ3").value = appState.config.names.juri3;
+
+        document.getElementById("cfgGasUrl").value = appState.config.gasUrl || "";
+        document.getElementById("gasCodePreview").textContent = GAS_TEMPLATE;
+
+        var classGrid = document.getElementById("classEditorGrid");
+        var html = "";
+        for (var i = 0; i < 16; i++) {
+          html += "<div class=\"form-group\" style=\"margin-bottom:4px;\">";
+          html += "<label>Peserta #" + (i + 1) + "</label>";
+          html += "<input type=\"text\" id=\"editClass_" + i + "\" value=\"" + escapeAttr(appState.classes[i]) + "\" />";
+          html += "</div>";
+        }
+        classGrid.innerHTML = html;
+      }
+
+      window.switchAdminTab = function (tabId, btnEl) {
+        var panels = document.querySelectorAll(".admin-tab-panel");
+        panels.forEach(function (p) { p.classList.add("hidden"); });
+        document.getElementById(tabId).classList.remove("hidden");
+
+        var btns = document.querySelectorAll(".tab-btn");
+        btns.forEach(function (b) { b.classList.remove("active"); });
+        btnEl.classList.add("active");
+      };
+
+      window.toggleLock = function () {
+        appState.config.locked = !appState.config.locked;
+        persistState("full");
+        renderAdminDashboard();
+        showToast(appState.config.locked ? "Penilaian berhasil DIKUNCI." : "Penilaian berhasil DIBUKA KEMBALI.");
+      };
+
+      window.saveTokenSettings = function (e) {
+        e.preventDefault();
+        var tAdmin = document.getElementById("cfgTokenAdmin").value.trim().toUpperCase();
+        var tJ1 = document.getElementById("cfgTokenJ1").value.trim().toUpperCase();
+        var tJ2 = document.getElementById("cfgTokenJ2").value.trim().toUpperCase();
+        var tJ3 = document.getElementById("cfgTokenJ3").value.trim().toUpperCase();
+
+        var nJ1 = document.getElementById("cfgNameJ1").value.trim();
+        var nJ2 = document.getElementById("cfgNameJ2").value.trim();
+        var nJ3 = document.getElementById("cfgNameJ3").value.trim();
+
+        if (!tAdmin || !tJ1 || !tJ2 || !tJ3 || !nJ1 || !nJ2 || !nJ3) {
+          alert("Semua kolom nama dan token wajib diisi.");
+          return;
+        }
+
+        var uniqueTokens = [tAdmin, tJ1, tJ2, tJ3];
+        for (var i = 0; i < uniqueTokens.length; i++) {
+          for (var j = i + 1; j < uniqueTokens.length; j++) {
+            if (uniqueTokens[i] === uniqueTokens[j]) {
+              alert("Token tidak boleh ada yang sama (" + uniqueTokens[i] + "). Gunakan token berbeda untuk setiap peran.");
+              return;
+            }
+          }
+        }
+
+        appState.config.tokens = { admin: tAdmin, juri1: tJ1, juri2: tJ2, juri3: tJ3 };
+        appState.config.names = { admin: "Panitia Lomba", juri1: nJ1, juri2: nJ2, juri3: nJ3 };
+        persistState("full");
+        renderAdminDashboard();
+        showToast("Pengaturan token dan nama juri berhasil disimpan.");
+      };
+
+      window.resetTokensToDefault = function () {
+        if (!confirm("Kembalikan semua token dan nama juri ke pengaturan bawaan?")) return;
+        appState.config.tokens = JSON.parse(JSON.stringify(DEFAULT_CONFIG.tokens));
+        appState.config.names = JSON.parse(JSON.stringify(DEFAULT_CONFIG.names));
+        persistState("full");
+        renderAdminDashboard();
+        showToast("Token berhasil dikembalikan ke bawaan.");
+      };
+
+      window.saveClassNames = function () {
+        var updated = [];
+        for (var i = 0; i < 16; i++) {
+          var val = document.getElementById("editClass_" + i).value.trim();
+          if (!val) {
+            alert("Nama kelas peserta #" + (i + 1) + " tidak boleh kosong.");
+            return;
+          }
+          updated.push(val);
+        }
+        appState.classes = updated;
+        persistState("full");
+        renderAdminDashboard();
+        showToast("Daftar 16 kelas peserta berhasil diperbarui.");
+      };
+
+      window.resetClassesToDefault = function () {
+        if (!confirm("Kembalikan daftar 16 kelas ke nama bawaan?")) return;
+        appState.classes = DEFAULT_CLASSES.slice();
+        persistState("full");
+        renderAdminDashboard();
+        showToast("Daftar kelas dikembalikan ke bawaan.");
+      };
+
+      window.saveGasUrl = function () {
+        var url = document.getElementById("cfgGasUrl").value.trim();
+        appState.config.gasUrl = url;
+        persistState("full");
+        renderAdminDashboard();
+        if (url) {
+          updateSyncPill("☁️ Terhubung Cloud");
+          showToast("URL Google Apps Script disimpan.");
+        } else {
+          updateSyncPill("💾 Penyimpanan Lokal");
+          showToast("Koneksi cloud dinonaktifkan.");
+        }
+      };
+
+      window.manualCloudPush = function () {
+        if (!appState.config.gasUrl) {
+          alert("Masukkan URL Google Apps Script terlebih dahulu.");
+          return;
+        }
+        pushToCloud("full");
+        showToast("Mengirim data lengkap ke Google Sheets...");
+      };
+
+      window.manualCloudPull = function () {
+        if (!appState.config.gasUrl) {
+          alert("URL Google Apps Script belum diatur.");
+          return;
+        }
+        pullFromCloud(false);
+      };
+
+      window.copyGasCode = function () {
+        copyTextToClipboard(GAS_TEMPLATE, "Kode Code.gs berhasil disalin!");
+      };
+
+      window.printReport = function () {
+        var ts = document.getElementById("printTimestamp");
+        if (ts) ts.textContent = "Dicetak pada: " + new Date().toLocaleString("id-ID");
+        window.print();
+      };
+
+      window.exportCSV = function () {
+        var rows = computeSummaryRows();
+        var ranked = rows.slice().sort(function (a, b) {
+          if (b.finalScore !== a.finalScore) return b.finalScore - a.finalScore;
+          return a.index - b.index;
+        });
+        var rankMap = {};
+        ranked.forEach(function (r, idx) { rankMap[r.index] = idx + 1; });
+
+        var header = [
+          "No",
+          "Kelas Peserta",
+          "Total Juri 1 (" + appState.config.names.juri1 + ")",
+          "Total Juri 2 (" + appState.config.names.juri2 + ")",
+          "Total Juri 3 (" + appState.config.names.juri3 + ")",
+          "Nilai Akhir",
+          "Peringkat",
+          "Predikat",
+          "Catatan Juri"
+        ];
+
+        var lines = [header.map(csvEscape).join(",")];
+        rows.forEach(function (r) {
+          var pred = getPredikat(r.finalScore, r.hasAny).label;
+          var line = [
+            r.index + 1,
+            r.className,
+            r.j1.total.toFixed(2),
+            r.j2.total.toFixed(2),
+            r.j3.total.toFixed(2),
+            r.finalScore.toFixed(2),
+            rankMap[r.index],
+            pred,
+            r.notesText
+          ];
+          lines.push(line.map(csvEscape).join(","));
+        });
+
+        var csvContent = "\uFEFF" + lines.join("\r\n");
+        downloadBlob(csvContent, "Rekap_Lomba_Pojok_Baca_SDN190.csv", "text/csv;charset=utf-8;");
+        showToast("File CSV / Excel berhasil diunduh.");
+      };
+
+      function csvEscape(val) {
+        var str = String(val === null || val === undefined ? "" : val);
+        if (str.indexOf("\"") !== -1 || str.indexOf(",") !== -1 || str.indexOf("\n") !== -1 || str.indexOf("\r") !== -1) {
+          return "\"" + str.replace(/"/g, "\"\"") + "\"";
+        }
+        return str;
+      }
+
+      window.exportJSON = function () {
+        var jsonStr = JSON.stringify(appState, null, 2);
+        downloadBlob(jsonStr, "Backup_Pojok_Baca_SDN190.json", "application/json;charset=utf-8;");
+        showToast("Backup JSON berhasil diunduh.");
+      };
+
+      window.importJSON = function (event) {
+        var file = event.target.files && event.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            var parsed = JSON.parse(e.target.result);
+            if (!parsed || !Array.isArray(parsed.classes) || !parsed.scores) {
+              throw new Error("Format JSON tidak sesuai.");
+            }
+            appState = parsed;
+            persistState("full");
+            renderAll();
+            showToast("Data JSON berhasil diimpor.");
+          } catch (err) {
+            alert("Gagal mengimpor file JSON: " + err.message);
+          }
+          event.target.value = "";
+        };
+        reader.readAsText(file);
+      };
+
+      function downloadBlob(content, filename, mimeType) {
+        var blob = new Blob([content], { type: mimeType });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      function escapeHtml(str) {
+        return String(str || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function escapeAttr(str) {
+        return escapeHtml(str);
+      }
+
+      var toastTimer = null;
+      function showToast(msg) {
+        var el = document.getElementById("toast");
+        el.textContent = msg;
+        el.classList.add("show");
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          el.classList.remove("show");
+        }, 2800);
+      }
+
+      (function restoreSession() {
+        try {
+          var savedRole = sessionStorage.getItem(SESSION_KEY);
+          if (savedRole && ["admin", "juri1", "juri2", "juri3"].indexOf(savedRole) !== -1) {
+            currentRole = savedRole;
+            enterDashboard();
+          }
+        } catch (e) {}
+      })();
+    })();
+  </script>
+</body>
+</html>
